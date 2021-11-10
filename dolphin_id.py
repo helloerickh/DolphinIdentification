@@ -12,6 +12,8 @@ import lib.file_utilities as util
 
 # Any other modules you create
 
+import os
+
 
 def dolphin_classifier(data_directory):
     """
@@ -22,11 +24,16 @@ def dolphin_classifier(data_directory):
 
     plt.ion()   # enable interactive plotting
 
-    use_onlyN = np.Inf  # debug, only read this many files for each species
 
-    raise NotImplementedError
+    #use_onlyN = np.Inf  # use this to get all files
+    use_onlyN = 20
+
+
+
+    #raise NotImplementedError
 
 
 if __name__ == "__main__":
-    data_directory = "path\to\data"  # root directory of data
+    # root directory of data, use os.path.abspath to avoid errors with diff operating systems
+    data_directory = os.path.abspath("./features")
     dolphin_classifier(data_directory)
