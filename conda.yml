@@ -1,0 +1,43 @@
+# Install anaconda or miniconda first from anaconda.org
+# Open an Anaconda prompt and cd to this directory
+# or provide the full path to this file.  
+# > conda env create --file conda.yml
+# This creates an environment called recognizer.  Like all conda
+# environments, you must activate the environment before using it.
+# For using an IDE, you will need to point the IDE to the Python
+# instance that was installed.  Anaconda places each environment
+# in a subdirectory of envs.
+#
+# USING A GPU ========================================
+# If you have an Nvidia GPU, you should be able to substitute tensorflow-gpu
+# for tensorflow and add the following dependencies:
+# - cudnn
+# - cudatoolkit
+#
+# While Anaconda is usually pretty good about setting up GPUs, I have
+# occasionally had problems with this and had to install the cudnn and
+# the cudatoolkit manually.  See https://www.tensorflow.org/install/gpu
+# but if you are only doing it for this project it may be more trouble
+# than it is worth.
+#
+# You can check if the GPU is configured correctly by the following:
+# >conda activate recognizer
+# (call-recognizer) python
+# >> import tensorflow as tf
+# >> tf.config.list_physical_devices('GPU')
+# The GPU should show up as a device in the list.
+name: recognizer
+channels:
+ - conda-forge
+ - defaults
+ - anaconda
+dependencies:
+ - python=3.9
+ - tensorflow=2.5
+ - numpy=1.19.5
+ - matplotlib
+ - scipy
+ - seaborn
+
+
+ 
