@@ -32,6 +32,11 @@ def dolphin_classifier(data_directory):
 
     #raise NotImplementedError
 
+def pre_processing(dir, num_files):
+    files = util.get_files(dir)
+    meta_data = util.parse_files(files)
+
+
 
 if __name__ == "__main__":
     # root directory of data, use os.path.abspath to avoid errors with diff operating systems
