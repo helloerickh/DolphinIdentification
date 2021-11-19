@@ -18,7 +18,7 @@ def parse_files(filenames):
     :return: List of LocationTimeType, named tuple with
              .site - name of recording location
              .label - class name
-             .start - start time of data)
+             .start - start time of data
              .features - feature data e.g. cepstral features
     """
 

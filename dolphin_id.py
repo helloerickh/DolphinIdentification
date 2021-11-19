@@ -5,14 +5,16 @@ from collections import defaultdict
 import numpy as np
 # Only needed if you plot your confusion matrix
 import matplotlib.pyplot as plt
+import keras
+from keras.models import Sequential
+from keras.layers import Dense
+from keras import regularizers
 
 # our libraries
-from lib.partition import split_by_day
-import lib.file_utilities as util
 
 # Any other modules you create
-
-import os
+from create_data import create_train_data, create_test_data
+from pre_processing import pre_processing
 
 
 def dolphin_classifier(data_directory):
@@ -24,21 +26,25 @@ def dolphin_classifier(data_directory):
 
     plt.ion()   # enable interactive plotting
 
-
     #use_onlyN = np.Inf  # use this to get all files
     use_onlyN = 20
 
+    gg_day_dict, gg_train_days, gg_test_days, lo_day_dict, lo_train_days, lo_test_days = pre_processing(data_directory, use_onlyN)
 
+    X_train, Y_train = create_train_data(gg_train_days, lo_train_days, gg_day_dict, lo_day_dict)
+
+    model = Sequential()
+    model.add(Dense(100, input_dim=20, activation='relu', kernel_regularizer='l2'))
+    model.add(Dense(100, activation='relu', kernel_regularizer='l2'))
+    model.add(Dense(100, activation='relu', kernel_regularizer='l2'))
+    model.add(Dense(2, activation='softmax'))
+
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+    nn_model = model.fit(X_train, Y_train, epochs=5, batch_size=16)
 
     #raise NotImplementedError
 
-def pre_processing(dir, num_files):
-    files = util.get_files(dir)
-    meta_data = util.parse_files(files)
-
-
 
 if __name__ == "__main__":
-    # root directory of data, use os.path.abspath to avoid errors with diff operating systems
-    data_directory = os.path.abspath("./features")
-    dolphin_classifier(data_directory)
+    dolphin_classifier(["./features/Gg", "./features/Lo/A"])
