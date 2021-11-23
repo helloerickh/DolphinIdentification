@@ -10,12 +10,22 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras import regularizers
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix
+import seaborn as sn
+import matplotlib.pyplot as plt
 
 # our libraries
 
 # Any other modules you create
 from create_data import create_train_data, create_test_data
 from pre_processing import pre_processing
+
+def data_preprocessing(data_directory):
+    use_onlyN = 20
+    data = util.get_files(data_directory, ".czcc", use_onlyN)
+    meta_data = util.parse_files(data)
+    print(meta_data[0].site)
+    print(f)
 
 
 def dolphin_classifier(data_directory):
@@ -53,7 +63,22 @@ def dolphin_classifier(data_directory):
         pred_classes.append(np.argmax(sum_prob))
 
     confoos = confusion_matrix(Y_test,pred_classes)
+    out = model.predict(X_test[0])
 
+    seaborn.set(color_codes=True)
+    plt.figure(1, figsize=(9, 6))
+    plt.title("Confusion Matrix")
+    seaborn.set(font_scale=1.4)
+    ax = seaborn.heatmap(confoos, annot=True, cmap="YlGnBu", cbar_kws={'label': 'Scale'})
+
+    labels = ["Gg", "Lo"]
+    ax.set_xticklabels(labels)
+    ax.set_yticklabels(labels)
+    ax.set(ylabel="True Label", xlabel="Predicted Label")
+
+    plt.savefig("confusion_matrix", bbox_inches='tight', dpi=300)
+    plt.title("Dolphin Classification Confusion Matrix")
+    plt.show()
 
     #raise NotImplementedError
 
