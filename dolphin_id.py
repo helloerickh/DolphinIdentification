@@ -9,6 +9,7 @@ import keras
 from keras.models import Sequential
 from keras.layers import Dense
 from keras import regularizers
+from sklearn.metrics import confusion_matrix
 
 # our libraries
 
@@ -31,7 +32,9 @@ def dolphin_classifier(data_directory):
 
     gg_day_dict, gg_train_days, gg_test_days, lo_day_dict, lo_train_days, lo_test_days = pre_processing(data_directory, use_onlyN)
 
-    X_train, Y_train = create_train_data(gg_train_days, lo_train_days, gg_day_dict, lo_day_dict)
+    X_train, Y_train, class_weights = create_train_data(gg_train_days, lo_train_days, gg_day_dict, lo_day_dict)
+
+    X_test, Y_test = create_test_data(gg_test_days, lo_test_days, gg_day_dict, lo_day_dict)
 
     model = Sequential()
     model.add(Dense(100, input_dim=20, activation='relu', kernel_regularizer='l2'))
@@ -41,7 +44,16 @@ def dolphin_classifier(data_directory):
 
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-    nn_model = model.fit(X_train, Y_train, epochs=5, batch_size=16)
+    nn_model = model.fit(X_train, Y_train, epochs=5, batch_size=16, class_weight=class_weights)
+
+    pred_classes = []
+    for x in X_test:
+        out = model.predict(x)
+        sum_prob = np.sum(np.log(out), axis=0)
+        pred_classes.append(np.argmax(sum_prob))
+
+    confoos = confusion_matrix(Y_test,pred_classes)
+
 
     #raise NotImplementedError
 
