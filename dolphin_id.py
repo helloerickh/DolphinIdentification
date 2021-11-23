@@ -10,22 +10,13 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras import regularizers
 from sklearn.metrics import confusion_matrix
-from sklearn.metrics import confusion_matrix
-import seaborn as sn
-import matplotlib.pyplot as plt
+import seaborn
 
 # our libraries
 
 # Any other modules you create
 from create_data import create_train_data, create_test_data
 from pre_processing import pre_processing
-
-def data_preprocessing(data_directory):
-    use_onlyN = 20
-    data = util.get_files(data_directory, ".czcc", use_onlyN)
-    meta_data = util.parse_files(data)
-    print(meta_data[0].site)
-    print(f)
 
 
 def dolphin_classifier(data_directory):
@@ -38,7 +29,7 @@ def dolphin_classifier(data_directory):
     plt.ion()   # enable interactive plotting
 
     #use_onlyN = np.Inf  # use this to get all files
-    use_onlyN = 20
+    use_onlyN = np.Inf
 
     gg_day_dict, gg_train_days, gg_test_days, lo_day_dict, lo_train_days, lo_test_days = pre_processing(data_directory, use_onlyN)
 
@@ -63,7 +54,8 @@ def dolphin_classifier(data_directory):
         pred_classes.append(np.argmax(sum_prob))
 
     confoos = confusion_matrix(Y_test,pred_classes)
-    out = model.predict(X_test[0])
+    error_rate = (confoos[0][1] + confoos[1][0]) / (confoos[0][0] + confoos[1][1])
+    print("The error rate is: ", error_rate)
 
     seaborn.set(color_codes=True)
     plt.figure(1, figsize=(9, 6))
@@ -79,6 +71,7 @@ def dolphin_classifier(data_directory):
     plt.savefig("confusion_matrix", bbox_inches='tight', dpi=300)
     plt.title("Dolphin Classification Confusion Matrix")
     plt.show()
+
 
     #raise NotImplementedError
 
