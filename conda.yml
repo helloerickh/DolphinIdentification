@@ -33,8 +33,8 @@ channels:
  - anaconda
 dependencies:
  - python=3.9
- - tensorflow=2.5
- - numpy=1.19.5
+ - tensorflow
+ - numpy
  - matplotlib
  - scipy
  - seaborn
