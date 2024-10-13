@@ -38,6 +38,7 @@ dependencies:
  - matplotlib
  - scipy
  - seaborn
+ - scikit-learn
 
 
  

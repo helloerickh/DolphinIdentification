@@ -28,7 +28,7 @@ def dolphin_classifier(data_directory):
 
     plt.ion()   # enable interactive plotting
 
-    #use_onlyN = np.Inf  # use this to get all files
+    # use this to get all files
     use_onlyN = np.Inf
 
     gg_day_dict, gg_train_days, gg_test_days, lo_day_dict, lo_train_days, lo_test_days = pre_processing(data_directory, use_onlyN)
@@ -39,6 +39,7 @@ def dolphin_classifier(data_directory):
 
     model = Sequential()
     model.add(Dense(100, input_dim=20, activation='relu', kernel_regularizer='l2'))
+    model.add(Dense(100, activation='relu', kernel_regularizer='l2'))
     model.add(Dense(100, activation='relu', kernel_regularizer='l2'))
     model.add(Dense(100, activation='relu', kernel_regularizer='l2'))
     model.add(Dense(2, activation='softmax'))
@@ -57,11 +58,11 @@ def dolphin_classifier(data_directory):
     error_rate = (confoos[0][1] + confoos[1][0]) / (confoos[0][0] + confoos[1][1])
     print("The error rate is: ", error_rate)
 
-    seaborn.set(color_codes=True)
+    seaborn.set_theme(color_codes=True)
     plt.figure(1, figsize=(9, 6))
     plt.title("Confusion Matrix")
-    seaborn.set(font_scale=1.4)
-    ax = seaborn.heatmap(confoos, annot=True, cmap="YlGnBu", cbar_kws={'label': 'Scale'})
+    seaborn.set_theme(font_scale=1.4)
+    ax = seaborn.heatmap(confoos, annot=True, cmap="YlGnBu", cbar_kws={'label': 'Scale'}, fmt='g')
 
     labels = ["Gg", "Lo"]
     ax.set_xticklabels(labels)

@@ -11,7 +11,8 @@ def create_train_data(train_days_gg, train_days_lo, gg_day_dict, lo_day_dict):
     for day in train_days_gg:
         # iterate through recordings in day
         for recording in gg_day_dict[day]:
-            # get row, col to make correct amount of labels
+            # get number of rows to make correct amount of labels
+            # col just byproduct of shape function
             row, col = recording.features.shape
             train_tensor_examples.append(recording.features)
             # create row amount of gg labels

@@ -4,10 +4,11 @@ from sklearn.model_selection import train_test_split
 import os
 
 def pre_processing(data_directory, use_onlyN):
+    # grab directory in data_directory list
     gg_dir = os.path.abspath(data_directory[0])
     lo_dir = os.path.abspath(data_directory[1])
 
-    # get list of click files for each species
+    # create list of files for each species
     ggfiles = util.get_files(gg_dir, ".czcc", use_onlyN)
     lofiles = util.get_files(lo_dir, ".czcc", use_onlyN)
 
@@ -16,17 +17,18 @@ def pre_processing(data_directory, use_onlyN):
     lometa_data = util.parse_files(lofiles)
     test_meta_data = ggmeta_data[0]
 
-    # create dictionaries keyed by day
-    # key=datetime.start value=list[tuples (.site, label, .start, .features)]
+    # create dictionaries key is day and value is list of tuples with HARP file metadata
+    # key=datetime.start value=list[(.site, label, .start, .features), ...]
     gg_day_dict = split_by_day(ggmeta_data)
     lo_day_dict = split_by_day(lometa_data)
+
 
     # create lists of days in dictionaries
     gg_keys = list(gg_day_dict.keys())
     lo_keys = list(lo_day_dict.keys())
-
-    gg_train_test_days = train_test_split(gg_keys, test_size=0.33, random_state=42)
-    lo_train_test_days = train_test_split(lo_keys, test_size=0.33, random_state=42)
+    # test_size 0.33
+    gg_train_test_days = train_test_split(gg_keys, test_size=0.66, random_state=42)
+    lo_train_test_days = train_test_split(lo_keys, test_size=0.66, random_state=42)
 
     gg_train_days = gg_train_test_days[0]
     gg_test_days = gg_train_test_days[1]
